@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, reorderArray } from 'ionic-angular';
 import { TareasProvider } from '../../providers/tareas/tareas';
+import { TareasArchivadasPage } from '../tareas-archivadas/tareas-archivadas';
 
 @Component({
   selector: 'page-home',
@@ -52,4 +53,38 @@ export class HomePage {
     alerta.present();
   }
 
+  irPaginaTareasArchivadas()
+  {
+   this.navCtrl.push(TareasArchivadasPage);    
+  }
+  
+  archivarTarea(indiceTarea){
+    this.servicioTareas.archivarTarea(indiceTarea);
+  }
+
+  editarTarea(indiceTarea){
+    let  alerta = this.alertController.create({
+      title: "Editar tarea",
+      message: "Por favor ingrese la nueva tarea",
+      inputs:[
+        {
+          name: "editarTareaInput",
+          value: this.tareas[indiceTarea]
+        }
+      ],
+      buttons:[
+        {
+          text: "Cancelar"
+        },
+        {
+          text: "Listo",
+          handler: data => {
+            this.servicioTareas.editarTarea(indiceTarea,data.editarTareaInput);
+          }
+        }
+      ]
+    });
+    alerta.present();
+    //this.servicioTareas.editarTarea(indiceTarea);
+  }
 }
